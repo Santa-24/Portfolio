@@ -26,9 +26,30 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Typing animation (NAME ONLY)
-const typingEl = document.getElementById('typingText');
+// Dark/Light Theme Toggle
+const themeToggle = document.getElementById('themeToggle');
+const htmlElement = document.documentElement;
 
+// Check for saved theme preference or default to dark
+const currentTheme = localStorage.getItem('theme') || 'dark';
+htmlElement.setAttribute('data-theme', currentTheme);
+
+themeToggle.addEventListener('click', () => {
+    const theme = htmlElement.getAttribute('data-theme');
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    
+    htmlElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    // Add rotation animation
+    themeToggle.style.transform = 'rotate(360deg)';
+    setTimeout(() => {
+        themeToggle.style.transform = 'rotate(0deg)';
+    }, 300);
+});
+
+// Typing animation
+const typingEl = document.getElementById('typingText');
 const names = ['Santanu', 'Cloud Architect'];
 let nameIndex = 0;
 let charIndex = 0;
@@ -60,7 +81,7 @@ function type() {
 
 setTimeout(type, 500);
 
-// Enhanced Download CV functionality
+// Download CV functionality
 document.getElementById('downloadCV').addEventListener('click', function (e) {
     e.preventDefault();
     
@@ -101,7 +122,6 @@ document.getElementById('downloadCV').addEventListener('click', function (e) {
             align-items: center;
             justify-content: center;
             z-index: 10000;
-            backdrop-filter: blur(10px);
             animation: fadeIn 0.3s ease;
         }
         
@@ -111,688 +131,258 @@ document.getElementById('downloadCV').addEventListener('click', function (e) {
         }
         
         .modal-content {
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            background: var(--bg-card);
             padding: 40px;
             border-radius: 20px;
-            border: 1px solid rgba(0, 191, 255, 0.3);
+            border: 1px solid var(--accent-primary);
             max-width: 500px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 191, 255, 0.2);
-            animation: slideUp 0.4s ease;
+            animation: slideUp 0.3s ease;
         }
         
         @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .modal-content h3 {
-            color: #00bfff;
+            font-size: 2rem;
             margin-bottom: 15px;
-            font-size: 28px;
-            background: linear-gradient(135deg, #00bfff, #1e90ff);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
         .modal-content p {
-            color: #aaa;
+            color: var(--text-secondary);
             margin-bottom: 30px;
-            font-size: 16px;
-            line-height: 1.6;
         }
         
         .download-options {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         
         .download-btn {
+            padding: 20px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 20px 25px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 191, 255, 0.2);
-            border-radius: 12px;
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            font-family: inherit;
+            gap: 15px;
+            text-align: left;
         }
         
         .download-btn:hover {
-            background: rgba(0, 191, 255, 0.1);
-            border-color: #00bfff;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 191, 255, 0.3);
-        }
-        
-        .pdf-btn {
-            background: linear-gradient(135deg, rgba(255, 59, 48, 0.1), rgba(220, 20, 60, 0.1));
-            border-color: rgba(255, 59, 48, 0.3);
-        }
-        
-        .pdf-btn:hover {
-            background: linear-gradient(135deg, rgba(255, 59, 48, 0.2), rgba(220, 20, 60, 0.2));
-            border-color: #ff3b30;
+            border-color: var(--accent-primary);
+            transform: translateX(5px);
         }
         
         .format-icon {
-            font-size: 28px;
+            font-size: 2.5rem;
         }
         
         .format-text {
-            flex: 1;
-            text-align: left;
-            margin-left: 15px;
+            font-size: 1.2rem;
             font-weight: 600;
-            font-size: 16px;
+            color: var(--text-primary);
+            display: block;
         }
         
         .format-size {
-            color: #888;
-            font-size: 13px;
-            opacity: 0.8;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: block;
         }
         
         .modal-close {
-            padding: 14px 35px;
+            padding: 12px 30px;
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: #aaa;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
             cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-            font-size: 14px;
-            width: 100%;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
         }
         
         .modal-close:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        @media (max-width: 768px) {
-            .modal-content {
-                padding: 30px 20px;
-            }
-            
-            .download-options {
-                gap: 12px;
-            }
-            
-            .download-btn {
-                padding: 18px 20px;
-            }
-            
-            .format-text {
-                font-size: 15px;
-            }
-            
-            .format-size {
-                font-size: 12px;
-            }
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
         }
     `;
     
     document.head.appendChild(style);
     document.body.appendChild(modal);
     
-    // Handle download format selection
-    modal.querySelectorAll('.download-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const format = this.dataset.format;
-            simulateDownload(format);
-            document.body.removeChild(modal);
-            document.head.removeChild(style);
-        });
-    });
-    
     // Close modal
-    modal.querySelector('.modal-close').addEventListener('click', function() {
-        document.body.removeChild(modal);
-        document.head.removeChild(style);
+    modal.querySelector('.modal-close').addEventListener('click', () => {
+        modal.remove();
+        style.remove();
     });
     
-    // Close modal on background click
-    modal.addEventListener('click', function(e) {
+    modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-            document.body.removeChild(modal);
-            document.head.removeChild(style);
+            modal.remove();
+            style.remove();
         }
     });
     
-    // Close modal on Escape key
-    document.addEventListener('keydown', function closeOnEscape(e) {
-        if (e.key === 'Escape') {
-            document.body.removeChild(modal);
-            document.head.removeChild(style);
-            document.removeEventListener('keydown', closeOnEscape);
-        }
+    // Handle download buttons
+    modal.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const format = btn.dataset.format;
+            
+            // Show downloading message
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span>⏳ Preparing download...</span>';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                // Create a sample CV download (you should replace this with actual CV file)
+                const message = document.createElement('div');
+                message.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: var(--accent-primary);
+                    color: white;
+                    padding: 20px 40px;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    z-index: 10001;
+                    animation: fadeIn 0.3s ease;
+                `;
+                message.textContent = `CV download started (${format.toUpperCase()})! Please add your actual CV file to enable downloads.`;
+                document.body.appendChild(message);
+                
+                setTimeout(() => {
+                    message.remove();
+                    modal.remove();
+                    style.remove();
+                }, 3000);
+                
+                // Note: Replace this with actual download logic
+                // Example: window.location.href = 'path/to/your-cv.' + format;
+            }, 1500);
+        });
     });
 });
 
-// ACTUAL CV DOWNLOAD FUNCTION - FIXED PATHS
-function simulateDownload(format) {
-    // CORRECTED CV file paths - files are in root directory
-    const cvFiles = {
-        'pdf': {
-            path: 'https://drive.google.com/file/d/1cOKWNfeTJ0yvQ4vx9mpTt1zxgNORFOES/view?usp=sharing',
-            filename: 'Santanu-Resume.pdf'
-        },
-        'doc': {
-            path: 'https://docs.google.com/document/d/1TIBQceHikKI-4D312j-QbIjbkfJcdXA0/edit?usp=sharing&ouid=113258384918181738704&rtpof=true&sd=true',
-            filename: 'Santanu-Resume.docx'
-        }
-    };
-    
-    const fileConfig = cvFiles[format];
-    if (!fileConfig) {
-        alert('Invalid format selected');
-        return;
-    }
-    
-    // Show loading state
-    const progress = document.createElement('div');
-    progress.className = 'download-progress';
-    progress.innerHTML = `
-        <div class="progress-content">
-            <div class="progress-icon">⏳</div>
-            <h3>Preparing your CV...</h3>
-            <div class="progress-bar">
-                <div class="progress-fill"></div>
-            </div>
-            <p>Downloading ${format.toUpperCase()} file...</p>
-            <div class="progress-details">
-                <span class="file-name">${fileConfig.filename}</span>
-                <span class="file-size">${format === 'pdf' ? '~2 MB' : '~3 MB'}</span>
-            </div>
-        </div>
-    `;
-    
-    // Add progress bar styles
-    const progressStyle = document.createElement('style');
-    progressStyle.textContent = `
-        .download-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10001;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .progress-content {
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 191, 255, 0.3);
-            max-width: 450px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 191, 255, 0.2);
-        }
-        
-        .progress-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .progress-content h3 {
-            color: #00bfff;
-            margin-bottom: 25px;
-            font-size: 22px;
-        }
-        
-        .progress-content p {
-            color: #aaa;
-            margin-top: 20px;
-            font-size: 15px;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-        
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #00bfff, #1e90ff);
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-        
-        .progress-details {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .file-name {
-            color: #ddd;
-            font-size: 13px;
-            font-weight: 500;
-        }
-        
-        .file-size {
-            color: #888;
-            font-size: 12px;
-        }
-        
-        @media (max-width: 768px) {
-            .progress-content {
-                padding: 30px 20px;
-            }
-            
-            .progress-icon {
-                font-size: 40px;
-            }
-            
-            .progress-content h3 {
-                font-size: 20px;
-            }
-        }
-    `;
-    
-    document.head.appendChild(progressStyle);
-    document.body.appendChild(progress);
-    
-    // Simulate download progress
-    let width = 0;
-    const interval = setInterval(() => {
-        width += Math.random() * 15 + 5; // Random progress increments
-        if (width > 100) width = 100;
-        progress.querySelector('.progress-fill').style.width = width + '%';
-        
-        if (width >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                document.body.removeChild(progress);
-                document.head.removeChild(progressStyle);
-                
-                // TRIGGER ACTUAL FILE DOWNLOAD
-                triggerActualDownload(fileConfig);
-                
-            }, 300);
-        }
-    }, 150);
-}
-
-// Function to trigger actual file download
-function triggerActualDownload(fileConfig) {
-    try {
-        // Method 1: Create a temporary link for download
-        const link = document.createElement('a');
-        link.href = fileConfig.path;
-        link.download = fileConfig.filename; // This forces download with custom filename
-        
-        // Append to body, click, and remove
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        // Show success message
-        setTimeout(() => {
-            showDownloadSuccess(fileConfig.filename);
-        }, 500);
-        
-    } catch (error) {
-        console.error('Download error:', error);
-        
-        // Fallback: Redirect to file if link method fails
-        setTimeout(() => {
-            window.location.href = fileConfig.path;
-        }, 1000);
-        
-        // Show fallback message
-        setTimeout(() => {
-            showDownloadSuccess(fileConfig.filename, true);
-        }, 1500);
-    }
-}
-
-// Show download success message
-function showDownloadSuccess(filename, isFallback = false) {
-    const successMsg = document.createElement('div');
-    successMsg.className = 'download-success';
-    successMsg.innerHTML = `
-        <div class="success-content">
-            <div class="success-icon">✅</div>
-            <h3>Download Complete!</h3>
-            <p>Your CV has been downloaded successfully.</p>
-            <div class="success-details">
-                <strong>File:</strong> ${filename}<br>
-                <strong>Saved to:</strong> Downloads folder
-            </div>
-            <p class="success-note">${isFallback ? 'Opened in new tab. Please use "Save As" to download.' : 'Check your downloads folder for the file.'}</p>
-            <button class="success-close">Close</button>
-        </div>
-    `;
-    
-    // Add success message styles
-    const successStyle = document.createElement('style');
-    successStyle.textContent = `
-        .download-success {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10002;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .success-content {
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 191, 255, 0.3);
-            max-width: 450px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 191, 255, 0.2);
-        }
-        
-        .success-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            animation: scaleIn 0.5s ease;
-        }
-        
-        @keyframes scaleIn {
-            0% { transform: scale(0); }
-            70% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-        
-        .success-content h3 {
-            color: #4CAF50;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-        
-        .success-content p {
-            color: #aaa;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-        
-        .success-details {
-            background: rgba(0, 191, 255, 0.05);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: left;
-            color: #ddd;
-            font-size: 14px;
-            line-height: 1.6;
-            border: 1px solid rgba(0, 191, 255, 0.1);
-        }
-        
-        .success-note {
-            color: #888;
-            font-size: 14px;
-            font-style: italic;
-            margin-top: 15px;
-        }
-        
-        .success-close {
-            padding: 12px 35px;
-            background: linear-gradient(135deg, #00bfff, #1e90ff);
-            border: none;
-            border-radius: 10px;
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 20px;
-            width: 100%;
-        }
-        
-        .success-close:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 191, 255, 0.4);
-        }
-        
-        @media (max-width: 768px) {
-            .success-content {
-                padding: 30px 20px;
-            }
-            
-            .success-icon {
-                font-size: 40px;
-            }
-            
-            .success-content h3 {
-                font-size: 22px;
-            }
-        }
-    `;
-    
-    document.head.appendChild(successStyle);
-    document.body.appendChild(successMsg);
-    
-    // Close success message
-    successMsg.querySelector('.success-close').addEventListener('click', function() {
-        document.body.removeChild(successMsg);
-        document.head.removeChild(successStyle);
-    });
-    
-    // Auto-close after 10 seconds
-    setTimeout(() => {
-        if (document.body.contains(successMsg)) {
-            document.body.removeChild(successMsg);
-            document.head.removeChild(successStyle);
-        }
-    }, 10000);
-}
-
-// Contact Form Validation
+// Contact Form Validation and Submission
 const contactForm = document.getElementById('contactForm');
+const formSuccess = document.getElementById('formSuccess');
 
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const subject = document.getElementById('subject').value.trim();
-        const message = document.getElementById('message').value.trim();
-        
-        // Reset previous errors
-        resetErrors();
-        
-        // Validate fields
-        let isValid = true;
-        
-        if (!name) {
-            showError('nameError', 'Name is required');
-            isValid = false;
-        } else if (name.length < 2) {
-            showError('nameError', 'Name must be at least 2 characters');
-            isValid = false;
-        }
-        
-        if (!email) {
-            showError('emailError', 'Email is required');
-            isValid = false;
-        } else if (!isValidEmail(email)) {
-            showError('emailError', 'Please enter a valid email address');
-            isValid = false;
-        }
-        
-        if (!subject) {
-            showError('subjectError', 'Subject is required');
-            isValid = false;
-        }
-        
-        if (!message) {
-            showError('messageError', 'Message is required');
-            isValid = false;
-        } else if (message.length < 10) {
-            showError('messageError', 'Message must be at least 10 characters');
-            isValid = false;
-        }
-        
-        if (isValid) {
-            // Simulate form submission
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            // In production, you would send this data to a server
-            // Example: fetch('/api/contact', { method: 'POST', body: JSON.stringify({ name, email, subject, message }) })
-            
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-                
-                // Show success message
-                document.getElementById('formSuccess').textContent = 'Message sent successfully! I\'ll get back to you soon.';
-                document.getElementById('formSuccess').style.display = 'block';
-                
-                // Reset form
-                contactForm.reset();
-                
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    document.getElementById('formSuccess').style.display = 'none';
-                }, 5000);
-            }, 2000);
-        }
-    });
-}
-
-function showError(elementId, message) {
-    const errorElement = document.getElementById(elementId);
-    errorElement.textContent = message;
-    errorElement.style.display = 'block';
-}
-
-function resetErrors() {
+contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Clear previous errors
     document.querySelectorAll('.error-message').forEach(el => {
         el.style.display = 'none';
         el.textContent = '';
     });
-    document.getElementById('formSuccess').style.display = 'none';
-}
-
-function isValidEmail(email) {
+    
+    // Get form values
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+    const message = document.getElementById('message').value.trim();
+    
+    let hasError = false;
+    
+    // Validate name
+    if (name.length < 2) {
+        showError('nameError', 'Please enter a valid name (at least 2 characters)');
+        hasError = true;
+    }
+    
+    // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Profile image fallback
-function setupImageFallbacks() {
-    const profileImg = document.getElementById('profileImg');
-    const aboutProfileImg = document.querySelector('.about-profile-img');
-    
-    // Create SVG placeholder for fallback
-    const createSVGPlaceholder = (text, isCircle = true) => {
-        const shape = isCircle ? 
-            `<circle cx="200" cy="200" r="180" fill="none" stroke="#00bfff" stroke-width="3" stroke-opacity="0.3" />` :
-            `<rect width="380" height="380" x="10" y="10" rx="20" fill="none" stroke="#00bfff" stroke-width="3" stroke-opacity="0.3" />`;
-        
-        return `data:image/svg+xml,${encodeURIComponent(`
-            <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
-                <defs>
-                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#00bfff;stop-opacity:0.1" />
-                        <stop offset="100%" style="stop-color:#1e90ff;stop-opacity:0.1" />
-                    </linearGradient>
-                </defs>
-                <rect width="400" height="400" fill="url(#grad)" />
-                ${shape}
-                <text x="200" y="220" font-family="Arial" font-size="120" font-weight="bold" 
-                      fill="#00bfff" text-anchor="middle" opacity="0.8">${text}</text>
-            </svg>
-        `)}`;
-    };
-    
-    // Set fallback for hero profile image
-    if (profileImg) {
-        profileImg.onerror = function() {
-            this.onerror = null; // Prevent infinite loop
-            this.src = createSVGPlaceholder('S', true);
-            this.style.objectFit = 'none';
-        };
-        
-        // Pre-check if image exists
-        const testImg = new Image();
-        testImg.src = profileImg.src;
-        testImg.onerror = function() {
-            profileImg.src = createSVGPlaceholder('S', true);
-            profileImg.style.objectFit = 'none';
-        };
+    if (!emailRegex.test(email)) {
+        showError('emailError', 'Please enter a valid email address');
+        hasError = true;
     }
     
-    // Set fallback for about profile image
-    if (aboutProfileImg) {
-        aboutProfileImg.onerror = function() {
-            this.onerror = null; // Prevent infinite loop
-            this.src = createSVGPlaceholder('S', false);
-            this.style.objectFit = 'none';
-            this.style.borderRadius = '20px';
-        };
-        
-        // Pre-check if image exists
-        const testAboutImg = new Image();
-        testAboutImg.src = aboutProfileImg.src;
-        testAboutImg.onerror = function() {
-            aboutProfileImg.src = createSVGPlaceholder('S', false);
-            aboutProfileImg.style.objectFit = 'none';
-            aboutProfileImg.style.borderRadius = '20px';
-        };
+    // Validate subject
+    if (subject.length < 5) {
+        showError('subjectError', 'Subject must be at least 5 characters');
+        hasError = true;
     }
-}
-
-// Call the function when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    setupImageFallbacks();
+    
+    // Validate message
+    if (message.length < 10) {
+        showError('messageError', 'Message must be at least 10 characters');
+        hasError = true;
+    }
+    
+    if (hasError) {
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+    
+    // Simulate form submission (replace with actual EmailJS or backend API)
+    try {
+        // Example EmailJS integration (you need to set up EmailJS account):
+        /*
+        emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+            from_name: name,
+            from_email: email,
+            subject: subject,
+            message: message
+        }).then(() => {
+            showSuccess('Message sent successfully! I\'ll get back to you soon.');
+            contactForm.reset();
+        });
+        */
+        
+        // Simulated delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Show success message
+        showSuccess('Message sent successfully! I\'ll get back to you soon. 🎉');
+        contactForm.reset();
+        
+    } catch (error) {
+        showError('messageError', 'Failed to send message. Please try again.');
+    } finally {
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+    }
 });
 
-// Add scroll reveal animations
+function showError(elementId, message) {
+    const errorEl = document.getElementById(elementId);
+    errorEl.textContent = message;
+    errorEl.style.display = 'block';
+}
+
+function showSuccess(message) {
+    formSuccess.textContent = message;
+    formSuccess.style.display = 'block';
+    
+    setTimeout(() => {
+        formSuccess.style.display = 'none';
+    }, 5000);
+}
+
+// Scroll Animations
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -801,29 +391,255 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.classList.add('active');
         }
     });
 }, observerOptions);
 
-// Observe all sections for scroll animations
-document.querySelectorAll('section').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(30px)';
-    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(section);
+// Observe all sections and cards
+document.addEventListener('DOMContentLoaded', () => {
+    const elementsToAnimate = document.querySelectorAll(`
+        .hero-content > *,
+        .about-content,
+        .timeline-item,
+        .skill-category,
+        .cert-card,
+        .project-card,
+        .blog-card,
+        .testimonial-card
+    `);
+    
+    elementsToAnimate.forEach(el => {
+        el.classList.add('scroll-reveal');
+        observer.observe(el);
+    });
 });
 
-// Keyboard navigation for accessibility
-document.addEventListener('keydown', function(e) {
-    // Close modal on Escape
-    if (e.key === 'Escape') {
-        const modals = document.querySelectorAll('.download-modal, .download-progress, .download-success');
-        modals.forEach(modal => {
-            if (document.body.contains(modal)) {
-                document.body.removeChild(modal);
-            }
-        });
+// Skill bars animation
+const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const progressBars = entry.target.querySelectorAll('.skill-progress');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+            skillObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.skill-category').forEach(category => {
+    skillObserver.observe(category);
+});
+
+// Header scroll effect
+let lastScroll = 0;
+const header = document.querySelector('header');
+
+window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll <= 0) {
+        header.style.boxShadow = 'none';
+    } else {
+        header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+    }
+    
+    lastScroll = currentScroll;
+});
+
+// Dynamic stats counter animation
+function animateCounter(element, target, duration = 2000) {
+    let start = 0;
+    const increment = target / (duration / 16);
+    
+    const timer = setInterval(() => {
+        start += increment;
+        if (start >= target) {
+            element.textContent = target + '+';
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.floor(start) + '+';
+        }
+    }, 16);
+}
+
+// Animate stats when they come into view
+const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const statNumbers = entry.target.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const target = parseInt(stat.textContent);
+                animateCounter(stat, target);
+            });
+            statsObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.5 });
+
+const heroStats = document.querySelector('.hero-stats');
+if (heroStats) {
+    statsObserver.observe(heroStats);
+}
+
+// Profile image placeholder handler
+const profileImages = document.querySelectorAll('.profile-img, .about-profile-img');
+profileImages.forEach(img => {
+    img.addEventListener('error', function() {
+        this.style.display = 'none';
+        const placeholder = document.createElement('div');
+        placeholder.style.cssText = `
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        `;
+        placeholder.textContent = '👨‍💻';
+        this.parentElement.appendChild(placeholder);
+    });
+});
+
+// Add active state to navigation on scroll
+const sections = document.querySelectorAll('section[id]');
+
+function activateNavOnScroll() {
+    const scrollY = window.pageYOffset;
+    
+    sections.forEach(section => {
+        const sectionHeight = section.offsetHeight;
+        const sectionTop = section.offsetTop - 100;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    });
+}
+
+window.addEventListener('scroll', activateNavOnScroll);
+
+// Add CSS for active nav link
+const navLinkStyle = document.createElement('style');
+navLinkStyle.textContent = `
+    .nav-links a.active {
+        color: var(--accent-primary);
+        position: relative;
+    }
+    
+    .nav-links a.active::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--accent-primary);
+    }
+`;
+document.head.appendChild(navLinkStyle);
+
+// Certification verify links (placeholder)
+document.querySelectorAll('.cert-verify').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Certification verification will be available once you add your actual credential links.');
+    });
+});
+
+// Blog read more links (placeholder)
+document.querySelectorAll('.blog-read-more').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Blog posts will be available when you add your actual blog content.');
+    });
+});
+
+// Initialize tooltips for social links
+document.querySelectorAll('.hero-social-links a').forEach(link => {
+    link.addEventListener('mouseenter', function() {
+        const title = this.getAttribute('title');
+        if (title) {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'social-tooltip';
+            tooltip.textContent = title;
+            tooltip.style.cssText = `
+                position: absolute;
+                bottom: -35px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--accent-primary);
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+                pointer-events: none;
+                z-index: 100;
+            `;
+            this.style.position = 'relative';
+            this.appendChild(tooltip);
+        }
+    });
+    
+    link.addEventListener('mouseleave', function() {
+        const tooltip = this.querySelector('.social-tooltip');
+        if (tooltip) {
+            tooltip.remove();
+        }
+    });
+});
+
+// Add parallax effect to hero section
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent && scrolled < window.innerHeight) {
+        heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+        heroContent.style.opacity = 1 - (scrolled / window.innerHeight);
     }
 });
+
+// Console message for developers
+console.log(`
+%c👋 Hello Developer!
+%cWelcome to Santanu's Portfolio
+
+%cThis portfolio showcases:
+✅ Modern responsive design
+✅ Dark/Light theme toggle
+✅ Smooth animations & transitions
+✅ Professional UI components
+✅ Clean, maintainable code
+
+%cFeel free to explore the code and reach out!
+
+%c🔗 GitHub: https://github.com/Santa-09
+`, 
+'color: #00bfff; font-size: 24px; font-weight: bold;',
+'color: #1e90ff; font-size: 16px;',
+'color: #44ff44; font-size: 14px; line-height: 1.8;',
+'color: #00bfff; font-size: 14px;',
+'color: #1e90ff; font-size: 14px; font-weight: bold;'
+);
+
+// Export functions for testing (optional)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        showError,
+        showSuccess,
+        animateCounter
+    };
+}
