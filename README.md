@@ -325,7 +325,7 @@ Chrome ✅ · Firefox ✅ · Safari ✅ · Edge ✅ · Mobile ✅
 
 ## 📞 Contact
 
-- **GitHub**: [Santa-09](https://github.com/Santa-24)
+- **GitHub**: [Santa-24](https://github.com/Santa-24)
 - **LinkedIn**: [santanu08](https://www.linkedin.com/in/santanu08)
 
 ---
